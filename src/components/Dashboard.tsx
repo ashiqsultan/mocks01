@@ -2,16 +2,15 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { FileText, Upload, Info } from 'lucide-react';
+import { Upload, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { TextDocDialogForm } from '@/components/TextDocDialogForm';
 import { useState } from 'react';
-import { useDocuments } from '@/store/queries';
+import DocumentList from '@/components/DocumentList';
 
 export default function Dashboard() {
   // State to manage dialog visibility
   const [isTextDocDialogOpen, setIsTextDocDialogOpen] = useState(false);
-  const { data: documents, isLoading, isError } = useDocuments();
   return (
     <div className='container mx-auto p-6'>
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
@@ -19,22 +18,7 @@ export default function Dashboard() {
         <Card className='p-6'>
           <div className='space-y-4'>
             <TextDocDialogForm isOpen={isTextDocDialogOpen} onOpenChange={setIsTextDocDialogOpen} />
-            <div className='rounded-lg border p-4'>
-              <h3 className='mb-4 text-lg font-medium'>Knowledge Base</h3>
-              <div className='space-y-3'>
-                {isLoading && <p>Loading...</p>}
-                {isError && <p>Error fetching documents</p>}
-                {documents?.map(doc => (
-                  <div
-                    key={doc.id}
-                    className='flex items-center gap-3 rounded-lg p-2 hover:bg-muted'
-                  >
-                    <FileText className='h-5 w-5 text-muted-foreground' />
-                    <span>{doc.title}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <DocumentList />
           </div>
         </Card>
 
