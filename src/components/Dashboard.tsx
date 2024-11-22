@@ -1,19 +1,10 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { FileText, Upload, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import { TextDocDialogForm } from '@/components/TextDocDialogForm';
 import { useState } from 'react';
 
 // Mock data for uploaded files
@@ -25,13 +16,7 @@ const mockFiles = [
 
 export default function Dashboard() {
   // State to manage dialog visibility
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  // Function to handle save action
-  const handleSave = () => {
-    console.log('API call to save the text document');
-    setIsDialogOpen(false); // Close dialog after saving
-  };
+  const [isTextDocDialogOpen, setIsTextDocDialogOpen] = useState(false);
 
   return (
     <div className='container mx-auto p-6'>
@@ -39,40 +24,7 @@ export default function Dashboard() {
         {/* Left Panel */}
         <Card className='p-6'>
           <div className='space-y-4'>
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant='outline' className='w-full'>
-                  Create Text Document
-                </Button>
-              </DialogTrigger>
-              <DialogContent
-                className='h-[auto] w-[50vw] max-w-none'
-                onPointerDownOutside={e => {
-                  e.preventDefault();
-                }}
-                onEscapeKeyDown={e => {
-                  e.preventDefault();
-                }}
-              >
-                <DialogHeader>
-                  <DialogTitle>Create New Text Document</DialogTitle>
-                </DialogHeader>
-                <div className='space-y-4'>
-                  <Input placeholder='Title' className='' />
-                  <Textarea
-                    placeholder='Enter text... or paste the content you wish to add'
-                    className='min-h-[250px]'
-                  />
-                </div>
-                <DialogFooter className=''>
-                  <Button variant='outline' onClick={() => setIsDialogOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button onClick={handleSave}>Save</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-
+            <TextDocDialogForm isOpen={isTextDocDialogOpen} onOpenChange={setIsTextDocDialogOpen} />
             <div className='rounded-lg border p-4'>
               <h3 className='mb-4 text-lg font-medium'>List Item Showing uploaded docs</h3>
               <div className='space-y-3'>
