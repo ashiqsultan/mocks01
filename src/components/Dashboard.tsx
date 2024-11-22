@@ -6,18 +6,12 @@ import { FileText, Upload, Info } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { TextDocDialogForm } from '@/components/TextDocDialogForm';
 import { useState } from 'react';
-
-// Mock data for uploaded files
-const mockFiles = [
-  { id: 1, name: 'Project_Proposal.pdf' },
-  { id: 2, name: 'Meeting_Minutes.docx' },
-  { id: 3, name: 'Requirements.txt' },
-];
+import { useDocuments } from '@/store/queries';
 
 export default function Dashboard() {
   // State to manage dialog visibility
   const [isTextDocDialogOpen, setIsTextDocDialogOpen] = useState(false);
-
+  const { data: documents, isLoading, isError } = useDocuments();
   return (
     <div className='container mx-auto p-6'>
       <div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
@@ -26,15 +20,17 @@ export default function Dashboard() {
           <div className='space-y-4'>
             <TextDocDialogForm isOpen={isTextDocDialogOpen} onOpenChange={setIsTextDocDialogOpen} />
             <div className='rounded-lg border p-4'>
-              <h3 className='mb-4 text-lg font-medium'>List Item Showing uploaded docs</h3>
+              <h3 className='mb-4 text-lg font-medium'>Knowledge Base</h3>
               <div className='space-y-3'>
-                {mockFiles.map(file => (
+                {isLoading && <p>Loading...</p>}
+                {isError && <p>Error fetching documents</p>}
+                {documents?.map(doc => (
                   <div
-                    key={file.id}
+                    key={doc.id}
                     className='flex items-center gap-3 rounded-lg p-2 hover:bg-muted'
                   >
                     <FileText className='h-5 w-5 text-muted-foreground' />
-                    <span>{file.name}</span>
+                    <span>{doc.title}</span>
                   </div>
                 ))}
               </div>
