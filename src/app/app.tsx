@@ -1,9 +1,9 @@
-import Dashboard from '@/components/Dashboard';
+import ChatBuilder from '@/components/ChatBuilder';
 
 function App() {
   return (
     <>
-      <Dashboard />
+      <ChatBuilder />
     </>
   );
 }
